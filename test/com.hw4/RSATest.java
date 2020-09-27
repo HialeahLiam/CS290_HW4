@@ -13,7 +13,7 @@ public class RSATest {
         BigInteger b = new BigInteger("98765432");
         BigInteger m = new BigInteger("9876543");
 
-        Assertions.assertEquals(a.modPow(b,m).toString(), RSA.modExp(87654321, 98765432, 9876543));
+        Assertions.assertEquals(a.modPow(b,m).toString(), RSA.modExp("87654321", "98765432", "9876543"));
     }
 
 }
