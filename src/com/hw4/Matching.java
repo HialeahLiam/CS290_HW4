@@ -40,17 +40,15 @@ public class Matching {
         }
         NUMBER_OF_RESIDENTS = numberOfResidents;
 
-        System.out.println(NUMBER_OF_HOSPITALS);
-        System.out.println(NUMBER_OF_RESIDENTS);
-
         residents = new Scanner(new File(residentFile));
+        residents.useDelimiter(",|\n");
 
-//        residentPrefs = new String[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
-//        for (int i = 0; i < NUMBER_OF_RESIDENTS; i++) {
-//            for (int j = 0; j <  NUMBER_OF_HOSPITALS; j++) {
-//                residentPrefs[i][j] = residents.next();
-//            }
-//        }
+        residentPrefs = new String[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
+        for (int i = 0; i < NUMBER_OF_RESIDENTS; i++) {
+            for (int j = 0; j <  NUMBER_OF_HOSPITALS; j++) {
+                residentPrefs[i][j] = residents.next();
+            }
+        }
     }
 
     public String[][] BMA() throws FileNotFoundException {
