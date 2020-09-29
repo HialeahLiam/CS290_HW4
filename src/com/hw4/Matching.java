@@ -3,6 +3,8 @@ package com.hw4;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Matching {
@@ -20,11 +22,35 @@ public class Matching {
         this.capacityFile = capacityFile;
     }
 
+    public String[][] BMA() throws FileNotFoundException {
+        Scanner hospitals = new Scanner(new File(hospitalFile));
+        Scanner residents = new Scanner(new File(residentFile));
+        Scanner capacities = new Scanner(new File(capacityFile));
+        hospitals.useDelimiter(",|\n");
+        residents.useDelimiter(",|\n");
+        capacities.useDelimiter(",|\n");
+
+        String[][] finalResidencies = new String[NUMBER_OF_HOSPITALS][];
+        List<String[]> applications = new ArrayList<>(NUMBER_OF_HOSPITALS);
+        int[] remainingCapacities = new int[NUMBER_OF_HOSPITALS]; //ith cell corresponds to ith hospital
+        //getting initial capacities
+        for (int i=0; i<NUMBER_OF_HOSPITALS; i++) remainingCapacities[i] = Integer.parseInt(capacities.next());
+
+        for (int i : remainingCapacities) {
+            System.out.println(i);
+        }
+
+//        List<String> applicants = new ArrayList<>();
+//        for ()
+
+        return finalResidencies;
+
+    }
+
     public int[] hospitalTopPicks() throws FileNotFoundException {
 
         Scanner hospitals = new Scanner(new File(hospitalFile));
         Scanner residents = new Scanner(new File(residentFile));
-
         hospitals.useDelimiter(",|\n");
         residents.useDelimiter(",|\n");
 
