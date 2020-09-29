@@ -3,14 +3,12 @@ package com.hw4;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Matching {
 
-    public static final int NUMBER_OF_HOSPITALS = 10;
-    public static final int NUMBER_OF_RESIDENTS = 1000;
+    public final int NUMBER_OF_HOSPITALS;
+    public final int NUMBER_OF_RESIDENTS;
 
     private String hospitalFile;
     private String residentFile;
@@ -22,14 +20,37 @@ public class Matching {
         this.residentFile = residentFile;
         this.capacityFile = capacityFile;
 
+
         Scanner residents = new Scanner(new File(residentFile));;
         residents.useDelimiter(",|\n");
-        residentPrefs = new String[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
-        for (int i = 0; i < NUMBER_OF_RESIDENTS; i++) {
-            for (int j = 0; j <  NUMBER_OF_HOSPITALS; j++) {
-                residentPrefs[i][j] = residents.next();
-            }
+        Scanner hospitals = new Scanner(new File(hospitalFile));;
+        residents.useDelimiter(",|\n");
+
+        int numberOfHospitals = 0;
+        while (hospitals.hasNext()) {
+            hospitals.next();
+            numberOfHospitals++;
         }
+        NUMBER_OF_HOSPITALS = numberOfHospitals;
+
+        int numberOfResidents = 0;
+        while (residents.hasNext()) {
+            residents.nextLine();
+            numberOfResidents++;
+        }
+        NUMBER_OF_RESIDENTS = numberOfResidents;
+
+        System.out.println(NUMBER_OF_HOSPITALS);
+        System.out.println(NUMBER_OF_RESIDENTS);
+
+        residents = new Scanner(new File(residentFile));
+
+//        residentPrefs = new String[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
+//        for (int i = 0; i < NUMBER_OF_RESIDENTS; i++) {
+//            for (int j = 0; j <  NUMBER_OF_HOSPITALS; j++) {
+//                residentPrefs[i][j] = residents.next();
+//            }
+//        }
     }
 
     public String[][] BMA() throws FileNotFoundException {
@@ -39,17 +60,28 @@ public class Matching {
         capacities.useDelimiter(",|\n");
 
         String[][] finalResidencies = new String[NUMBER_OF_HOSPITALS][];
-        List<String[]> applications = new ArrayList<>(NUMBER_OF_HOSPITALS);
+        ArrayList<Integer>[] applications = new ArrayList[NUMBER_OF_HOSPITALS];
+        Set<Integer> hospitalsAtCapacity = new HashSet<>();
+        Set<Integer> residentsAlreadyAccepted = new HashSet<>();
         int[] remainingCapacities = new int[NUMBER_OF_HOSPITALS]; //ith cell corresponds to ith hospital
         //getting initial capacities
         for (int i=0; i<NUMBER_OF_HOSPITALS; i++) remainingCapacities[i] = Integer.parseInt(capacities.next());
 
-
-        for (int i = 0; i < 10; i++) {
-            System.out.print(" " + residentPrefs[999][i]);
+        //Actual BMA
+        for (int r = 0; r < NUMBER_OF_RESIDENTS; r += NUMBER_OF_HOSPITALS) {
+            int preference = 0;
+            while (remainingCapacities[Integer.parseInt(residentPrefs[r][preference])] == 0) {
+                preference++;
+            }
+            if (applications[preference] == null) applications[preference] = new ArrayList<>();
+            applications[preference].add(r);
         }
-//        List<String> applicants = new ArrayList<>();
-//        for ()
+
+        for (ArrayList hospital : applications) {
+            System.out.println();
+            for (Object applicant : hospital) System.out.print(" " + applicant);
+
+        }
 
         return finalResidencies;
 
