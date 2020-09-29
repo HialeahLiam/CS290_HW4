@@ -13,6 +13,7 @@ public class Main {
         System.out.println("Original message:\t" + originalMessage);
 
         Matching residency = new Matching("resources/hospitals.csv", "resources/residents.csv", "resources/capacities.csv");
+        Matching exampleMatching = new Matching("resources/smallHospitals.csv", "resources/smallResidents.csv", "resources/smallCapacities.csv");
 
         //making array to track top choices
         int[] topPreferences = residency.hospitalTopPicks();
@@ -22,6 +23,8 @@ public class Main {
         }
 
 
+        exampleMatching.BMA();
+        residency.BMA();
 
     }
 }

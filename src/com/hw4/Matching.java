@@ -61,30 +61,30 @@ public class Matching {
 
         String[][] finalResidencies = new String[NUMBER_OF_HOSPITALS][];
         ArrayList<Integer>[] applications = new ArrayList[NUMBER_OF_HOSPITALS];
+        for (int i = 0; i < applications.length; i++) {
+            applications[i] = new ArrayList<>();
+        }
         Set<Integer> hospitalsAtCapacity = new HashSet<>();
         Set<Integer> residentsAlreadyAccepted = new HashSet<>();
         int[] remainingCapacities = new int[NUMBER_OF_HOSPITALS]; //ith cell corresponds to ith hospital
 
         //getting initial capacities
-//        for (int i=0; i<NUMBER_OF_HOSPITALS; i++) {
-//            remainingCapacities[i] = capacities.nextInt();
-//        }
+        for (int i=0; i<NUMBER_OF_HOSPITALS; i++) {
+            String s = capacities.nextLine();
+            remainingCapacities[i] = Integer.parseInt(s);
+        }
 
-//        //Actual BMA
-//        for (int r = 0; r < NUMBER_OF_RESIDENTS; r += NUMBER_OF_HOSPITALS) {
-//            int preference = 0;
-//            while (remainingCapacities[Integer.parseInt(residentPrefs[r][preference])] == 0) {
-//                preference++;
-//            }
-//            if (applications[preference] == null) applications[preference] = new ArrayList<>();
-//            applications[preference].add(r);
-//        }
-//
-//        for (ArrayList hospital : applications) {
-//            System.out.println();
-//            for (Object applicant : hospital) System.out.print(" " + applicant);
-//
-//        }
+        //Actual BMA
+        for (int r = 0; r < NUMBER_OF_RESIDENTS; r++) {
+            int preference = 0;
+            while (remainingCapacities[Integer.parseInt(residentPrefs[r][preference])] == 0) {
+                preference++;
+            }
+            int preferredHospital = Integer.parseInt(residentPrefs[r][preference]);
+            applications[preferredHospital].add(r);
+        }
+
+        
 
         return finalResidencies;
 
