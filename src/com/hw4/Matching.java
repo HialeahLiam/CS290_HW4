@@ -15,7 +15,12 @@ public class Matching {
     private final String residentFile;
     private final String capacityFile;
     public final String[][] residentPrefs;
+    public final String[][] hospitalPrefs;
+
+    public final int[] initialCapacities;
     public int[] remainingCapacities;
+    private Set<Integer> hospitalsAtCapacity = new HashSet<>();
+    private Set<Integer> residentsAlreadyAccepted = new HashSet<>();
 
     public Matching(String hospitalFile, String residentFile, String capacityFile) throws FileNotFoundException {
         this.hospitalFile = hospitalFile;
@@ -51,11 +56,21 @@ public class Matching {
             }
         }
 
+        //converting hospital preferences into 2d array
+        hospitals = getScanner(hospitalFile);
+        hospitalPrefs = new String[NUMBER_OF_HOSPITALS][NUMBER_OF_RESIDENTS];
+        for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
+            String[] r = hospitals.nextLine().split(",");
+            for (int j = 0; j <  NUMBER_OF_RESIDENTS; j++) {
+                hospitalPrefs[i][j] = r[j];
+            }
+        }
+
         //getting initial capacities
-        remainingCapacities = new int[NUMBER_OF_HOSPITALS]; //ith cell corresponds to ith hospital
+        initialCapacities = new int[NUMBER_OF_HOSPITALS]; //ith cell corresponds to ith hospital
         for (int i=0; i<NUMBER_OF_HOSPITALS; i++) {
             String s = capacities.nextLine();
-            remainingCapacities[i] = Integer.parseInt(s);
+            initialCapacities[i] = Integer.parseInt(s);
         }
     }
 
@@ -63,15 +78,28 @@ public class Matching {
         Scanner hospitals = getScanner(hospitalFile);
         Scanner capacities = getScanner(capacityFile);
 
-//        Set<Integer> hospitalsAtCapacity = new HashSet<>();
-//        Set<Integer> residentsAlreadyAccepted = new HashSet<>();
 
         //Actual BMA
-
         String[][] finalResidencies = new String[NUMBER_OF_HOSPITALS][];
+        for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
+            finalResidencies[i] = new String[initialCapacities[i]];
+        }
+
+        remainingCapacities = initialCapacities;
+
+//        while (residentsAlreadyAccepted.size() < NUMBER_OF_RESIDENTS) {
+//            ArrayList[] applications = application(remainingCapacities);
+//            for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
+//                while (remainingCapacities[i] > 0) {
+//                    if (applications[i].contains())
+//                }
+//            }
+//        }
+
         return finalResidencies;
 
     }
+
 
     public ArrayList[] application(int[] remainingCapacities) {
 
@@ -81,6 +109,7 @@ public class Matching {
         }
 
         for (int r = 0; r < NUMBER_OF_RESIDENTS; r++) {
+            if (residentsAlreadyAccepted.contains(r)) break; //skips residents who have already been matched
             int preference = 0;
             while (remainingCapacities[Integer.parseInt(residentPrefs[r][preference])] == 0) {
                 preference++;
