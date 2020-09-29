@@ -2,6 +2,7 @@ package com.hw4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,16 +16,13 @@ public class Main {
         Matching residency = new Matching("resources/hospitals.csv", "resources/residents.csv", "resources/capacities.csv");
         Matching exampleMatching = new Matching("resources/smallHospitals.csv", "resources/smallResidents.csv", "resources/smallCapacities.csv");
 
-        //making array to track top choices
-        int[] topPreferences = residency.hospitalTopPicks();
+//        ArrayList[] topPicks = exampleMatching.application(exampleMatching.remainingCapacities);
+        ArrayList[] topPicks = residency.application(residency.remainingCapacities);
 
-        for (int i=0; i<9; i++) {
-            System.out.println("Number of top picks for Hospital " + i + ":\t" + topPreferences[i]);
+        System.out.println("First choices for hospitals");
+        for (int i = 0; i < topPicks.length; i++) {
+            System.out.println("Hospital " + i + ":\t" + topPicks[i].size());
         }
-
-
-        exampleMatching.BMA();
-        residency.BMA();
 
     }
 }
