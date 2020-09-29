@@ -84,27 +84,13 @@ public class Matching {
             applications[preferredHospital].add(r);
         }
 
-        
+        System.out.println("First choices that each hospital received:");
+        for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
+            System.out.println("Hospital " + i + ":\t" + applications[i].size());
+        }
 
         return finalResidencies;
 
-    }
-
-    public int[] hospitalTopPicks() throws FileNotFoundException {
-
-        Scanner hospitals = new Scanner(new File(hospitalFile));
-        Scanner residents = new Scanner(new File(residentFile));
-        hospitals.useDelimiter(DELIMITER);
-        residents.useDelimiter(DELIMITER);
-
-        int[] topPreferences = new int[10];
-
-        while (residents.hasNext()) {
-            topPreferences[Integer.parseInt(residents.next())]++;
-            for (int i=0; i<9; i++) residents.next();
-        }
-
-        return topPreferences;
     }
 
 }
