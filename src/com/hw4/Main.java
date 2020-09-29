@@ -12,22 +12,10 @@ public class Main {
         String originalMessage = RSA.decrypt(decryptionStrings[0], decryptionStrings[2], decryptionStrings[1]);
         System.out.println("Original message:\t" + originalMessage);
 
-        Scanner hospitals = new Scanner(new File("resources/hospitals.csv"));
-        Scanner residents = new Scanner(new File("resources/residents.csv"));
-        Scanner capacities = new Scanner(new File("resources/capacities.csv"));
-
-        hospitals.useDelimiter(",|\n");
-        residents.useDelimiter(",|\n");
-//        System.out.println(capacities.next());
-//        System.out.println(capacities.next());
+        Matching residency = new Matching("resources/hospitals.csv", "resources/residents.csv", "resources/capacities.csv");
 
         //making array to track top choices
-        int[] topPreferences = new int[10];
-
-        while (residents.hasNext()) {
-            topPreferences[Integer.parseInt(residents.next())]++;
-            for (int i=0; i<9; i++) residents.next();
-        }
+        int[] topPreferences = residency.hospitalTopPicks();
 
         for (int i=0; i<9; i++) {
             System.out.println("Number of top picks for Hospital " + i + ":\t" + topPreferences[i]);
