@@ -15,19 +15,27 @@ public class Matching {
     private String hospitalFile;
     private String residentFile;
     private String capacityFile;
+    public String[][] residentPrefs;
 
-    public Matching(String hospitalFile, String residentFile, String capacityFile) {
+    public Matching(String hospitalFile, String residentFile, String capacityFile) throws FileNotFoundException {
         this.hospitalFile = hospitalFile;
         this.residentFile = residentFile;
         this.capacityFile = capacityFile;
+
+        Scanner residents = new Scanner(new File(residentFile));;
+        residents.useDelimiter(",|\n");
+        residentPrefs = new String[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
+        for (int i = 0; i < NUMBER_OF_RESIDENTS; i++) {
+            for (int j = 0; j <  NUMBER_OF_HOSPITALS; j++) {
+                residentPrefs[i][j] = residents.next();
+            }
+        }
     }
 
     public String[][] BMA() throws FileNotFoundException {
         Scanner hospitals = new Scanner(new File(hospitalFile));
-        Scanner residents = new Scanner(new File(residentFile));
         Scanner capacities = new Scanner(new File(capacityFile));
         hospitals.useDelimiter(",|\n");
-        residents.useDelimiter(",|\n");
         capacities.useDelimiter(",|\n");
 
         String[][] finalResidencies = new String[NUMBER_OF_HOSPITALS][];
@@ -36,10 +44,10 @@ public class Matching {
         //getting initial capacities
         for (int i=0; i<NUMBER_OF_HOSPITALS; i++) remainingCapacities[i] = Integer.parseInt(capacities.next());
 
-        for (int i : remainingCapacities) {
-            System.out.println(i);
-        }
 
+        for (int i = 0; i < 10; i++) {
+            System.out.print(" " + residentPrefs[999][i]);
+        }
 //        List<String> applicants = new ArrayList<>();
 //        for ()
 
