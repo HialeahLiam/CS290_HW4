@@ -17,12 +17,18 @@ public class Main {
         Matching exampleMatching = new Matching("resources/smallHospitals.csv", "resources/smallResidents.csv", "resources/smallCapacities.csv");
 
 //        ArrayList[] topPicks = exampleMatching.application(exampleMatching.remainingCapacities);
-        ArrayList[] topPicks = residency.application(residency.remainingCapacities);
+        ArrayList[] topPicks = residency.application(residency.initialCapacities);
 
         System.out.println("First choices for hospitals");
         for (int i = 0; i < topPicks.length; i++) {
             System.out.println("Hospital " + i + ":\t" + topPicks[i].size());
         }
+        exampleMatching.BMA();
+        exampleMatching.printResidencies();
+
+        residency.BMA();
+        residency.printResidencies();
+
 
     }
 }

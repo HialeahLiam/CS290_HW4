@@ -16,6 +16,7 @@ public class Matching {
     private final String capacityFile;
     public final int[][] residentPrefs;
     public final int[][] hospitalPrefs;
+    private int[][] finalResidencies;
 
     public final int[] initialCapacities;
     public int[] remainingCapacities;
@@ -85,25 +86,43 @@ public class Matching {
             finalResidencies[i] = new int[initialCapacities[i]];
         }
 
-        remainingCapacities = initialCapacities;
+        remainingCapacities = new int[initialCapacities.length];
+        System.arraycopy(initialCapacities, 0, remainingCapacities, 0, initialCapacities.length);
 
-//        while (residentsAlreadyAccepted.size() < NUMBER_OF_RESIDENTS) {
-//            ArrayList[] applications = application(remainingCapacities);
-//            for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
-//                while (remainingCapacities[i] > 0) {
-//                    for (int j = 0; j < NUMBER_OF_RESIDENTS; j++) {
-//                        for (int k = 0; k < applications[i].size(); k++) {
-//                            if (applications[i].get(k)hospitalPrefs[i][j])) {
-//                                hospitalPrefs[i][initialCapacities[i] - remainingCapacities[i]] = applications[i].get()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        while (residentsAlreadyAccepted.size() < NUMBER_OF_RESIDENTS) {
+            ArrayList[] applications = application(remainingCapacities);
+            for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {     //loops through hospitals
+                for (int j = 0; j < NUMBER_OF_RESIDENTS; j++) {     //loops through a hospital's preferences
+                    if (!residentsAlreadyAccepted.contains(hospitalPrefs[i][j])) {//skips accepted residents when searching through hospital's prefs
+                        for (int k = 0; k < applications[i].size(); k++) {      //loops through residents that applied to hospital in this round
+                            int applicant = (int) applications[i].get(k);
+                            if (applicant == (hospitalPrefs[i][j])) {
+                                finalResidencies[i][initialCapacities[i] - remainingCapacities[i]] = applicant; // residents matching higher hospital prefs are inserted first
+                                remainingCapacities[i]--;
+                                residentsAlreadyAccepted.add(applicant);
+                                applications[i].remove(k);
+                                break;
+                            }
+                        }
+                    }
+                    if (remainingCapacities[i] < 1 || applications[i].size() < 1) break;
+                }
+            }
+        }
 
+        this.finalResidencies = finalResidencies;
         return finalResidencies;
 
+    }
+
+    public void printResidencies(){
+        for (int i = 0; i < NUMBER_OF_HOSPITALS ; i++) {
+            System.out.print("Hospital " + i + ":\t");
+            for (int j = 0; j < initialCapacities[i]; j++) {
+                System.out.print("|" + finalResidencies[i][j]);
+            }
+            System.out.println() ;
+        }
     }
 
 
@@ -115,13 +134,14 @@ public class Matching {
         }
 
         for (int r = 0; r < NUMBER_OF_RESIDENTS; r++) {
-            if (residentsAlreadyAccepted.contains(r)) break; //skips residents who have already been matched
-            int preference = 0;
-            while (remainingCapacities[residentPrefs[r][preference]] == 0) {
-                preference++;
+            if (!residentsAlreadyAccepted.contains(r)) { //skips residents who have already been matched
+                int preference = 0;
+                while (remainingCapacities[residentPrefs[r][preference]] == 0) {
+                    preference++;
+                }
+                int preferredHospital = residentPrefs[r][preference];
+                applications[preferredHospital].add(r);
             }
-            int preferredHospital = residentPrefs[r][preference];
-            applications[preferredHospital].add(r);
         }
 
         return applications;
