@@ -14,8 +14,8 @@ public class Matching {
     private final String hospitalFile;
     private final String residentFile;
     private final String capacityFile;
-    public final String[][] residentPrefs;
-    public final String[][] hospitalPrefs;
+    public final int[][] residentPrefs;
+    public final int[][] hospitalPrefs;
 
     public final int[] initialCapacities;
     public int[] remainingCapacities;
@@ -48,21 +48,21 @@ public class Matching {
 
         //converting resident preferences into 2d array
         residents = getScanner(residentFile);
-        residentPrefs = new String[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
+        residentPrefs = new int[NUMBER_OF_RESIDENTS][NUMBER_OF_HOSPITALS];
         for (int i = 0; i < NUMBER_OF_RESIDENTS; i++) {
             String[] r = residents.nextLine().split(",");
             for (int j = 0; j <  NUMBER_OF_HOSPITALS; j++) {
-                residentPrefs[i][j] = r[j];
+                residentPrefs[i][j] = Integer.parseInt(r[j]);
             }
         }
 
         //converting hospital preferences into 2d array
         hospitals = getScanner(hospitalFile);
-        hospitalPrefs = new String[NUMBER_OF_HOSPITALS][NUMBER_OF_RESIDENTS];
+        hospitalPrefs = new int[NUMBER_OF_HOSPITALS][NUMBER_OF_RESIDENTS];
         for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
             String[] r = hospitals.nextLine().split(",");
             for (int j = 0; j <  NUMBER_OF_RESIDENTS; j++) {
-                hospitalPrefs[i][j] = r[j];
+                hospitalPrefs[i][j] = Integer.parseInt(r[j]);
             }
         }
 
@@ -74,15 +74,15 @@ public class Matching {
         }
     }
 
-    public String[][] BMA() throws FileNotFoundException {
+    public int[][] BMA() throws FileNotFoundException {
         Scanner hospitals = getScanner(hospitalFile);
         Scanner capacities = getScanner(capacityFile);
 
 
         //Actual BMA
-        String[][] finalResidencies = new String[NUMBER_OF_HOSPITALS][];
+        int[][] finalResidencies = new int[NUMBER_OF_HOSPITALS][];
         for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
-            finalResidencies[i] = new String[initialCapacities[i]];
+            finalResidencies[i] = new int[initialCapacities[i]];
         }
 
         remainingCapacities = initialCapacities;
@@ -91,7 +91,13 @@ public class Matching {
 //            ArrayList[] applications = application(remainingCapacities);
 //            for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
 //                while (remainingCapacities[i] > 0) {
-//                    if (applications[i].contains())
+//                    for (int j = 0; j < NUMBER_OF_RESIDENTS; j++) {
+//                        for (int k = 0; k < applications[i].size(); k++) {
+//                            if (applications[i].get(k)hospitalPrefs[i][j])) {
+//                                hospitalPrefs[i][initialCapacities[i] - remainingCapacities[i]] = applications[i].get()
+//                            }
+//                        }
+//                    }
 //                }
 //            }
 //        }
@@ -111,10 +117,10 @@ public class Matching {
         for (int r = 0; r < NUMBER_OF_RESIDENTS; r++) {
             if (residentsAlreadyAccepted.contains(r)) break; //skips residents who have already been matched
             int preference = 0;
-            while (remainingCapacities[Integer.parseInt(residentPrefs[r][preference])] == 0) {
+            while (remainingCapacities[residentPrefs[r][preference]] == 0) {
                 preference++;
             }
-            int preferredHospital = Integer.parseInt(residentPrefs[r][preference]);
+            int preferredHospital = residentPrefs[r][preference];
             applications[preferredHospital].add(r);
         }
 
