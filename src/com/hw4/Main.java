@@ -23,11 +23,22 @@ public class Main {
         for (int i = 0; i < topPicks.length; i++) {
             System.out.println("Hospital " + i + ":\t" + topPicks[i].size());
         }
+        exampleMatching.BMA();
+        exampleMatching.printResidencies();
+        exampleMatching.preferenceMatches();
         exampleMatching.DMA();
         exampleMatching.printResidencies();
+        exampleMatching.preferenceMatches();
 
+        residency.BMA();
+        residency.printResidencies();
+        residency.preferenceMatches();
         residency.DMA();
         residency.printResidencies();
+        residency.preferenceMatches();
+
+
+
 
 
     }

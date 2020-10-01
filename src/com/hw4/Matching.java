@@ -127,7 +127,9 @@ public class Matching {
         remainingCapacities = new int[initialCapacities.length];
         System.arraycopy(initialCapacities, 0, remainingCapacities, 0, initialCapacities.length);
 
+        residentsAlreadyAccepted.clear();
         ArrayList[] applications = application(initialCapacities);
+
 
         while (residentsAlreadyAccepted.size() < NUMBER_OF_RESIDENTS) {
             residentsAlreadyAccepted.clear();
@@ -140,7 +142,6 @@ public class Matching {
                             finalResidencies[i][initialCapacities[i] - remainingCapacities[i]] = applicant; // residents matching higher hospital prefs are inserted first
                             remainingCapacities[i]--;
                             residentsAlreadyAccepted.add(applicant);
-                            this.finalResidencies = finalResidencies;
                             break;
                         }
                     }
@@ -150,9 +151,25 @@ public class Matching {
             applications = updateApplication(applications);
         }
 
-//        this.finalResidencies = finalResidencies;
+        this.finalResidencies = finalResidencies;
         return finalResidencies;
 
+    }
+    public void preferenceMatches() {
+        int[] prefs = new int[NUMBER_OF_HOSPITALS];
+        for (int i = 0; i < NUMBER_OF_HOSPITALS; i++) {
+            for (int j = 0; j < finalResidencies[i].length; j++) {
+                int resident = finalResidencies[i][j];
+                for (int k = 0; k < residentPrefs[resident].length; k++) {
+                    if (residentPrefs[resident][k] == i) prefs[k]++;
+                }
+            }
+        }
+
+        System.out.println("\nPreference Matchings:");
+        for (int i:prefs) {
+            System.out.println(i);
+        }
     }
 
     public void printResidencies(){
